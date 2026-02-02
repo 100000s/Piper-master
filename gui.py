@@ -21,9 +21,9 @@ import sqlite3
 import sys
 import piper as Piper
 import wallet_enc
-import Image
-import ImageFont
-import ImageDraw
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
 import qrcode
 import time
 import os
@@ -109,7 +109,7 @@ class PiperUtil:
             # get cointype
             con = None
             try:
-                con = sqlite3.connect('/home/pi/Printer/settings.db3')
+                con = sqlite3.connect('settings.db3')
                 cur = con.cursor()
                 cur.execute(
                     "SELECT value FROM Settings WHERE Settings.key='cointype';")
@@ -649,7 +649,7 @@ class Tab1(tk.Frame):
 
         con = None
         try:
-            con = sqlite3.connect('/home/pi/Printer/settings.db3')
+            con = sqlite3.connect('settings.db3')
             cur = con.cursor()
             cur.execute("SELECT key, value FROM Settings;")
             # heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT
@@ -947,7 +947,7 @@ class Tab4(tk.Frame):
 
         con = None
         try:
-            con = sqlite3.connect('/home/pi/Printer/settings.db3')
+            con = sqlite3.connect('settings.db3')
             cur = con.cursor()
             cur.execute("SELECT key, value FROM Settings;")
             # heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT
@@ -1086,7 +1086,7 @@ class Tab4(tk.Frame):
 
 		con = None
                 try:
-                        con = sqlite3.connect('/home/pi/Printer/settings.db3')
+                        con = sqlite3.connect('settings.db3')
                         cur = con.cursor()
                         cur.execute("SELECT key, value FROM Settings;")
 			# heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT 1;")
@@ -1120,7 +1120,7 @@ class Tab4(tk.Frame):
     def applySettings(self):
 
         try:
-            con = sqlite3.connect('/home/pi/Printer/settings.db3')
+            con = sqlite3.connect('settings.db3')
             cur = con.cursor()
             cur.execute(
                 "SELECT versionNum, prefix FROM CoinFormats WHERE name=?",
@@ -1378,7 +1378,7 @@ class AltCoinMan(tk.Toplevel):
 
 		con = None
                 try:
-                        con = sqlite3.connect('/home/pi/Printer/settings.db3')
+                        con = sqlite3.connect('settings.db3')
                         cur = con.cursor()
                         cur.execute("SELECT key, value FROM Settings;")
 			# heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT 1;")
@@ -1516,7 +1516,7 @@ class AltCoinMan(tk.Toplevel):
 
         try:
 
-            con = sqlite3.connect('/home/pi/Printer/settings.db3')
+            con = sqlite3.connect('settings.db3')
             con.execute(
                 "INSERT OR REPLACE INTO CoinFormats (versionNum, prefix, bgfile, name) VALUES (?,?,?,?);",
                 (self.versionNum.get(),
@@ -1538,7 +1538,7 @@ class AltCoinMan(tk.Toplevel):
 		#prefill the fields
 		if self.coinType.get() != 'New Coin Type':
 			try:
-				con = sqlite3.connect('/home/pi/Printer/settings.db3')
+                con = sqlite3.connect('settings.db3')
 				cur = con.cursor()
 				cur.execute("SELECT versionNum, prefix, bgfile FROM CoinFormats WHERE name=?",(self.coinType.get(),))
 				row = cur.fetchone()

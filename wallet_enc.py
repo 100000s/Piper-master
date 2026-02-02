@@ -11,11 +11,11 @@ import serializeBTC as ser
 import Crypto.Cipher.AES as AES
 import Crypto.Hash.SHA256 as SHA256
 import scrypt
-from itertools import izip
+zip = zip  # Python 3: zip is already lazy, replaces itertools.izip
 from array import array
-from bitcoin.bip38 import Bip38
-from bitcoin.key import CKey
-from bitcoin.base58 import CBase58Data, CBitcoinAddress
+from bip38 import Bip38
+from CKey import CKey
+from base58 import CBase58Data, CBitcoinAddress
 
 
 def Hash(x): return hashlib.sha256(hashlib.sha256(x).digest()).digest()
@@ -58,7 +58,7 @@ def pw_encode(pub, priv, password):
         con = None
         encType = ""
         try:
-            con = sqlite3.connect('/home/pi/Printer/settings.db3')
+            con = sqlite3.connect('settings.db3')
             cur = con.cursor()
             cur.execute(
                 "SELECT value FROM Settings WHERE key='encType' LIMIT 1;")

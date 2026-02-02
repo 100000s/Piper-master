@@ -17,9 +17,9 @@
 #
 # Piper Copyright (C) 2013  Christopher Cassano
 
-import Image
-import ImageDraw
-import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 import qrcode
 import sys
 from Adafruit_Thermal import *
@@ -67,7 +67,7 @@ if numCopies <= 0:
 #load settings from DB
 con = None
 try:
-	con = sqlite3.connect('/home/pi/Printer/settings.db3')
+	con = sqlite3.connect('settings.db3')
 	cur = con.cursor()
 	cur.execute("SELECT key, value FROM Settings;")
 	# heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT 1;")

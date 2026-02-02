@@ -223,7 +223,7 @@ def print_keypair(pubkey, privkey, leftBorderText, coinType, btcaddr):
 # check the cointype to decide which background to use
     con = None
     try:
-        con = sqlite3.connect('/home/pi/Printer/settings.db3')
+        con = sqlite3.connect('settings.db3')
         cur = con.cursor()
         cur.execute(
             "SELECT bgfile FROM CoinFormats WHERE name=?;", (coinType,))

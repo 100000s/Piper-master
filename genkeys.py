@@ -28,7 +28,7 @@ def genKeys():
 
 	con = None
 	try:
-		con = sqlite3.connect('/home/pi/Printer/settings.db3')
+		con = sqlite3.connect('settings.db3')
 		cur = con.cursor()
 		cur.execute("SELECT CoinFormats.versionNum FROM Settings, CoinFormats WHERE Settings.key='cointype' and Settings.value = CoinFormats.name;")
 		row = cur.fetchone()
