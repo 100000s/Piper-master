@@ -15,8 +15,8 @@
 #
 # Piper Copyright (C) 2013  Christopher Cassano
 
-import Tkinter as tk
-import ttk
+import tkinter as tk
+from tkinter import ttk
 import sqlite3
 import sys
 import piper as Piper
@@ -1524,7 +1524,7 @@ class AltCoinMan(tk.Toplevel):
                  self.bgImg.get(),
                  self.newCoinName.get()))
         except sqlite3.Error as e:
-            print "Error %s:" % e.args[0]
+            print("Error %s:" % e.args[0])
             sys.exit(1)
         finally:
             if con:
@@ -1534,7 +1534,7 @@ class AltCoinMan(tk.Toplevel):
         self.showMessage("Success!", "Coin added!")
         """
 	def coinTypeChanged(self, name, index, mode):
-		print 'new coin type: '+self.coinType.get()
+        print('new coin type: ' + self.coinType.get())
 		#prefill the fields
 		if self.coinType.get() != 'New Coin Type':
 			try:
@@ -1546,7 +1546,7 @@ class AltCoinMan(tk.Toplevel):
 				defaultPrefix = row[1]
 				bgImg = row[2]
 			except sqlite3.Error as e:
-				print "Error %s:" % e.args[0]
+                print("Error %s:" % e.args[0])
 				sys.exit(1)
 
 
@@ -1610,7 +1610,7 @@ def rClicker(e):
         rmenu.tk_popup(e.x_root + 40, e.y_root + 10, entry="0")
 
     except tk.TclError:
-        print ' - rClick menu, something wrong'
+        print(' - rClick menu, something wrong')
         pass
 
     return "break"
@@ -1623,7 +1623,7 @@ def rClickbinder(r):
             r.bind_class(b, sequence='<Button-3>',
                          func=rClicker, add='')
     except tk.TclError:
-        print ' - rClickbinder, something wrong'
+        print(' - rClickbinder, something wrong')
         pass
 
 
