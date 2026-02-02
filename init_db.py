@@ -1,8 +1,7 @@
 import sqlite3
-import os
 
 db_path = 'settings.db3'
-os.makedirs(os.path.dirname(db_path), exist_ok=True)
+import sqlite3
 con = sqlite3.connect(db_path)
 cur = con.cursor()
 
