@@ -25,24 +25,21 @@ privkey = ""
 
 def genKeys():
     global pubkey, privkey
-
     con = None
     try:
         con = sqlite3.connect('settings.db3')
         cur = con.cursor()
-        cur.execute(
-            "SELECT CoinFormats.versionNum FROM Settings, CoinFormats WHERE Settings.key='cointype' and Settings.value = CoinFormats.name;")
+        cur.execute("SELECT CoinFormats.versionNum FROM Settings, CoinFormats WHERE Settings.key='cointype' and Settings.value = CoinFormats.name;")
         row = cur.fetchone()
         versionNum = str(row[0])
 
-		cur.execute("SELECT value FROM Settings WHERE key='addrPrefix';")
-		row = cur.fetchone()
-		if row is None:
-			print("Error: 'addrPrefix' entry missing in Settings table. Using default prefix '1'.")
-			addrPrefix = '1'
-		else:
-			addrPrefix = row[0]
-
+        cur.execute("SELECT value FROM Settings WHERE key='addrPrefix';")
+        row = cur.fetchone()
+        if row is None:
+            print("Error: 'addrPrefix' entry missing in Settings table. Using default prefix '1'.")
+            addrPrefix = '1'
+        else:
+            addrPrefix = row[0]
     except sqlite3.Error as e:
         print("Error %s:" % e.args[0])
         sys.exit(1)
@@ -51,9 +48,11 @@ def genKeys():
             con.commit()
             con.close()
 
-    process = Popen(["./vanitygen", "-q", "-t", "1", "-s", "/dev/random", "-X", versionNum, addrPrefix], stdout=PIPE)
+    process = Popen(["./vanitygen", "-q", "-t","1","-s", "/dev/random","-X", versionNum, addrPrefix], stdout=PIPE)
 
     results = process.stdout.read()
     addrs = results.split()
+    pubkey = addrs[3].strip()
+    privkey = addrs[5].strip()
     pubkey = addrs[3].strip()
     privkey = addrs[5].strip()
