@@ -1,18 +1,54 @@
-Piper: A bitcoin hardware paper wallet printer and so much more.  Check out piperwallet.com for more info!
+# Piper Wallet (Windows Edition)
 
-    This file is part of Piper.
+Piper is a Python-based tool for generating and printing secure cryptocurrency paper wallets. This version is updated for Python 3 and Windows compatibility.
 
-    Piper is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+## Features
+- Print single or bulk wallets for Bitcoin and altcoins
+- Shamir's Secret Sharing (SSSS) for splitting secrets
+- QR code generation for keys and passwords
+- Settings and coin management via GUI
+- SQLite database for settings and key storage
 
-    Piper is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+## Requirements
+- Python 3.7+
+- Windows OS (tested on Windows 10/11)
+- [vanitygen.exe](https://github.com/samr7/vanitygen) (must be in the Piper-master directory)
 
-    You should have received a copy of the GNU General Public License
-    along with Piper.  If not, see <http://www.gnu.org/licenses/>.
+## Python Dependencies
+Install all required packages with:
 
-    Piper Copyright (C) 2013  Christopher Cassano
+    pip install -r requirements.txt
+
+## Setup
+1. Clone or extract this repository.
+2. Ensure `vanitygen.exe` is present in the Piper-master directory.
+3. Initialize the databases (if not already present):
+
+    python init_db.py
+    python init_keys_db.py
+
+4. (Optional) If you see errors about missing settings or coin types, run:
+
+    python fix_settings.py
+    python fix_coinformats.py
+
+5. Start the GUI:
+
+    python gui.py
+
+## Usage
+- Use the GUI to print wallets, view keys, manage settings, and add altcoins.
+- All wallet data is stored in `keys.db3` and settings in `settings.db3`.
+- Serial numbers are tracked in `serialnumber.txt`.
+
+## Troubleshooting
+- If you see errors about missing settings or tables, run the provided fix scripts.
+- If you see `FileNotFoundError` for `vanitygen.exe`, download it and place it in the project directory.
+- For Python errors, ensure you are using Python 3 and all dependencies are installed.
+
+## License
+This project is licensed under the GNU GPL v3. See license.txt for details.
+
+## Credits
+- Original author: Christopher Cassano
+- Windows/Python 3 migration: Community

@@ -1,0 +1,5 @@
+Pillow
+qrcode
+pycryptodome
+sssa
+base58
