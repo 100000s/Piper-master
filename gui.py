@@ -109,21 +109,32 @@ class PiperUtil:
             # get cointype
             con = None
             try:
-                con = sqlite3.connect('settings.db3')
+                db_path = os.path.abspath('settings.db3')
+                print(f"[DEBUG] Connecting to settings database at: {db_path}")
+                con = sqlite3.connect(db_path)
                 cur = con.cursor()
-                cur.execute(
-                    "SELECT value FROM Settings WHERE Settings.key='cointype';")
+                # Get cointype
+                cur.execute("SELECT value FROM Settings WHERE Settings.key='cointype';")
                 row = cur.fetchone()
+                if row is None:
+                    qrPopup = QRPopup()
+                    qrPopup.showAlert("Error: 'cointype' setting is missing in the database.")
+                    return
                 coinType = row[0]
-                cur.execute(
-                    "SELECT value FROM Settings WHERE Settings.key='randomPasswordLength';")
+                # Get randomPasswordLength
+                cur.execute("SELECT value FROM Settings WHERE Settings.key='randomPasswordLength';")
                 row = cur.fetchone()
-                randPwLength = row[0]
-                cur.execute(
-                    "SELECT value FROM Settings WHERE Settings.key='keyGenType';")
+                if row is None:
+                    randPwLength = 8  # default value
+                else:
+                    randPwLength = row[0]
+                # Get keyGenType
+                cur.execute("SELECT value FROM Settings WHERE Settings.key='keyGenType';")
                 row = cur.fetchone()
-                keyGenType = row[0]
-
+                if row is None:
+                    keyGenType = 'trad'  # default value
+                else:
+                    keyGenType = row[0]
             except sqlite3.Error as e:
                 print("Error %s:" % e.args[0])
                 sys.exit(1)
@@ -649,7 +660,9 @@ class Tab1(tk.Frame):
 
         con = None
         try:
-            con = sqlite3.connect('settings.db3')
+            db_path = os.path.abspath('settings.db3')
+            print(f"[DEBUG] Connecting to settings database at: {db_path}")
+            con = sqlite3.connect(db_path)
             cur = con.cursor()
             cur.execute("SELECT key, value FROM Settings;")
             # heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT
@@ -666,7 +679,7 @@ class Tab1(tk.Frame):
                 con.commit()
                 con.close()
 
-        if settings['keyGenType'] == 'trad':
+        if settings.get('keyGenType', 'trad') == 'trad':
             self.rdoFrame3.pack()
             self.printButton.forget()
             self.printButton.pack()
@@ -736,7 +749,9 @@ class Tab3(tk.Frame):
         qrPopup = QRPopup()
         con = None
         try:
-            con = sqlite3.connect('keys.db3')  # '/home/pi/Printer/keys.db3')
+            db_path = os.path.abspath('keys.db3')
+            print(f"[DEBUG] Connecting to keys database at: {db_path}")
+            con = sqlite3.connect(db_path)  # '/home/pi/Printer/keys.db3')
             cur = con.cursor()
             cur.execute(
                 "SELECT serialnum, public, private, coinType, password FROM keys")
@@ -947,7 +962,9 @@ class Tab4(tk.Frame):
 
         con = None
         try:
-            con = sqlite3.connect('settings.db3')
+            db_path = os.path.abspath('settings.db3')
+            print(f"[DEBUG] Connecting to settings database at: {db_path}")
+            con = sqlite3.connect(db_path)
             cur = con.cursor()
             cur.execute("SELECT key, value FROM Settings;")
             # heatTime, coinType, addrPrefix, encType FROM piper_settings LIMIT
@@ -970,8 +987,12 @@ class Tab4(tk.Frame):
                 con.commit()
                 con.close()
 
-        self.opMenu = tk.OptionMenu(
-            *(coinTypeFrame, self.coinType) + tuple(options))
+        # Fix OptionMenu argument order: parent, variable, *values
+        # If options is empty, provide a default value to avoid TypeError
+        if not options:
+            options = ["No coins available"]
+        self.coinType.set(options[0])
+        self.opMenu = tk.OptionMenu(coinTypeFrame, self.coinType, *options)
         self.opMenu.pack(side=tk.LEFT, padx=10, pady=10)
 
         coinTypeFrame.pack()
@@ -1059,15 +1080,16 @@ class Tab4(tk.Frame):
             text="These settings will be stored and used when printing in headless mode as well.")
         label6.pack(padx=10)
 
-        self.heatTime.set(settings['heatTime'])
-        self.coinType.set(settings['cointype'])
-        self.addrPrefix.set(settings['addrPrefix'])
-        self.headlessEnc.set(settings['headlessEnc'])
-        self.randPwLength.set(settings['randomPasswordLength'])
-        self.keyGenType.set(settings['keyGenType'])
-        self.pFware.set(settings['printerFirmware'])
+        # Use defaults if any settings are missing
+        self.heatTime.set(settings.get('heatTime', 100))
+        self.coinType.set(settings.get('cointype', options[0]))
+        self.addrPrefix.set(settings.get('addrPrefix', '1'))
+        self.headlessEnc.set(settings.get('headlessEnc', '0'))
+        self.randPwLength.set(int(settings.get('randomPasswordLength', 8)))
+        self.keyGenType.set(settings.get('keyGenType', 'trad'))
+        self.pFware.set(settings.get('printerFirmware', 'old'))
 
-        if settings['keyGenType'] == "trad":
+        if settings.get('keyGenType', 'trad') == "trad":
             self.tradFrame.pack()
         else:
             global tab1
@@ -1120,7 +1142,9 @@ class Tab4(tk.Frame):
     def applySettings(self):
 
         try:
-            con = sqlite3.connect('settings.db3')
+            db_path = os.path.abspath('settings.db3')
+            print(f"[DEBUG] Connecting to settings database at: {db_path}")
+            con = sqlite3.connect(db_path)
             cur = con.cursor()
             cur.execute(
                 "SELECT versionNum, prefix FROM CoinFormats WHERE name=?",
@@ -1515,8 +1539,9 @@ class AltCoinMan(tk.Toplevel):
     def applySettings(self):
 
         try:
-
-            con = sqlite3.connect('settings.db3')
+            db_path = os.path.abspath('settings.db3')
+            print(f"[DEBUG] Connecting to settings database at: {db_path}")
+            con = sqlite3.connect(db_path)
             con.execute(
                 "INSERT OR REPLACE INTO CoinFormats (versionNum, prefix, bgfile, name) VALUES (?,?,?,?);",
                 (self.versionNum.get(),
