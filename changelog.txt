@@ -1,0 +1,48 @@
+From 1.01 to 1.02:
+	Updated bitaddress.org to latest 2.5.2 version which includes BIP0038 Support
+	Implemented BIP0038 as an option for printing encrypted paper wallets
+	Brought in zimage's bitcoin-python-library
+	Added dialog boxes for error messages which were previously only showing up in the terminal and were therefore useless to the end user
+
+
+From 1.02 to 1.03:
+	Fixed bug in main Piper daemon that was caused by the RPi.GPIO Python Event library.  The bug could cause Piper to register a button press when the remember/forget switch was switched.
+	Added Litecoin logo image for Litecoin paper wallets contributed by a Piper user
+	Added bitcoinpaperwallet.com html page for users who desire to use it with their own printers
+
+From 1.03 to 1.04:
+	Fixed printing so that paper wallets now print in one smooth motion.
+
+From 1.04 to 1.05:
+	Removed the ability to use BIP0038 with litecoin because the bitcoin python library we are using has no litecoin fork yet
+
+From 1.05 to 1.06:
+	Moved settings to own database in a better structure, so settings are now seperate from keys
+	Added alt coins and cleaned up litecoin key generation.  Was able to remove seperate version of vanitygen for litecoin only.
+	Removed sleep from between duplicate wallet printing
+	Added Utilities tab to GUI with SSSS and misc text printing
+
+From 1.06 to 1.07:
+	Added option for BIP32 key generation with xpub and xprv
+	Added the ability to add new alt-coins on the Utilities tab
+	Created new wallet designs
+	
+From 1.07 to 1.08:
+	This update changed the way the user interfaces with the button to activate printing.  Instead of holding the button down for a specific time to activate different features, the user should now press the button multiple times to activate those features.  See the manual at https://piperwallet.com/owner for more information
+
+From 1.08 to 1.09
+	Fixed shutdown LED behavior bug
+	Added option for old vs new printer firmware version to Settings tab	
+From 1.09 to 1.10
+	Actualy fixed the LED shutdown bug
+
+From 1.10 to 1.11
+	Removed heat time reset from deleteAllKeys.sh
+
+From 1.11 to 1.12
+	Changed bip32 generation to also print btc address in addition to xpub
+	Updated Armory to latest version
+	Updated bitaddress.org to latest version
+
+From 1.12 to 1.13
+	Changed button polling method to match new hardware revision
