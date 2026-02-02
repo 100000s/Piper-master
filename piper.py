@@ -15,6 +15,8 @@
 #
 # Piper Copyright (C) 2013  Christopher Cassano
 
+import math
+import random
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -29,36 +31,46 @@ else:
     class Adafruit_Thermal:
         def __init__(self, *args, **kwargs):
             print("[MOCK] Adafruit_Thermal printer initialized.")
+
         def print(self, *args, **kwargs):
             print(f"[MOCK] Printing: {args}")
+
         def feed(self, *args, **kwargs):
             print(f"[MOCK] Feed: {args}")
+
         def setSize(self, *args, **kwargs):
             print(f"[MOCK] Set size: {args}")
+
         def justify(self, *args, **kwargs):
             print(f"[MOCK] Justify: {args}")
+
         def boldOn(self):
             print("[MOCK] Bold on")
+
         def boldOff(self):
             print("[MOCK] Bold off")
+
         def inverseOn(self):
             print("[MOCK] Inverse on")
+
         def inverseOff(self):
             print("[MOCK] Inverse off")
+
         def underlineOn(self):
             from sssa import create_shares, recover_secret
             print("[MOCK] Underline on")
+
         def underlineOff(self):
             print("[MOCK] Underline off")
+
         def sleep(self):
             print("[MOCK] Sleep")
+
         def wake(self):
             print("[MOCK] Wake")
+
         def setDefault(self):
             print("[MOCK] Set default")
-from shamir import split_secret, recover_secret
-import random
-import math
 
 
 def getRandPass(length):
@@ -81,6 +93,7 @@ def printSegmentedKey(key, printer):
     printer.justify('L')
     for i in range(0, keyLen, charsPerLine):
         for j in range(spacesToPrepend):
+            pass
         printer.println(key[i:i + charsPerLine])
 
 
