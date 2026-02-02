@@ -874,7 +874,7 @@ class Tab4(tk.Frame):
         self.populate()
 
     def populate(self):
-        for item in self.children.values():
+        for item in list(self.children.values()):
             item.destroy()
 
         pUtil = PiperUtil()
@@ -1151,6 +1151,11 @@ class Tab4(tk.Frame):
                 (self.coinType.get(),
                  ))
             row = cur.fetchone()
+            if row is None:
+                self.showMessage("Error!!", f"Coin type '{self.coinType.get()}' not found in CoinFormats table.")
+                if con:
+                    con.close()
+                return
             versionNum = row[0]
             defaultPrefix = row[1]
         except sqlite3.Error as e:

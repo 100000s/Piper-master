@@ -34,11 +34,15 @@ def genKeys():
 		row = cur.fetchone()
 		versionNum = str(row[0])
 
-		cur.execute("SELECT value FROM Settings WHERE key='addrPrefix';");
-		row = cur.fetchone()
-		addrPrefix = row[0]
+			cur.execute("SELECT value FROM Settings WHERE key='addrPrefix';")
+			row = cur.fetchone()
+			if row is None:
+				print("Error: 'addrPrefix' entry missing in Settings table. Using default prefix '1'.")
+				addrPrefix = '1'
+			else:
+				addrPrefix = row[0]
 		
-	except sqlite3.Error, e:
+	except sqlite3.Error as e:
 		print("Error %s:" % e.args[0])
 		sys.exit(1)
 	finally:
