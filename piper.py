@@ -46,6 +46,7 @@ else:
         def inverseOff(self):
             print("[MOCK] Inverse off")
         def underlineOn(self):
+            from sssa import create_shares, recover_secret
             print("[MOCK] Underline on")
         def underlineOff(self):
             print("[MOCK] Underline off")
@@ -55,7 +56,7 @@ else:
             print("[MOCK] Wake")
         def setDefault(self):
             print("[MOCK] Set default")
-from shamir import Secret
+from shamir import split_secret, recover_secret
 import random
 import math
 
@@ -80,7 +81,6 @@ def printSegmentedKey(key, printer):
     printer.justify('L')
     for i in range(0, keyLen, charsPerLine):
         for j in range(spacesToPrepend):
-            printer.printChar(' ')
         printer.println(key[i:i + charsPerLine])
 
 
@@ -125,69 +125,6 @@ def splitAndPrint(ttp, k, n):
         finalImg.paste(getQR(shr, qrSize), (30, 55))
 
         qrImg[shr] = finalImg
-
-    dividerLine = Image.new("RGB", (384, 6), "black")
-    dividerLine.paste(Image.new("RGB", (384, 3), "white"), (0, 0))
-    for shr in shares:
-        printer.printImage(dividerLine, True)
-        printer.println(
-            "This is a share in a " +
-            k +
-            " of " +
-            n +
-            "\nthreshold scheme")
-        printer.println(shr)
-        printer.printImage(qrImg[shr], True)
-        printer.println(shr)
-        printer.println("Shamir's Secret Sharing")
-        printer.printImage(dividerLine, True)
-        printer.feed(3)
-
-    printer.setDefault()  # Restore printer to defaults
-
-
-def encodeQRAndPrint(ttp):
-    qrSize = (340, 340)
-
-    finalImg = Image.new("RGB", (384, 440), "white")
-    finalImg.paste(getQR(ttp, qrSize), (30, 55))
-
-    printer = Adafruit_Thermal("/dev/ttyAMA0", 19200, timeout=5)
-
-    printer.printImage(finalImg, True)
-
-    printer.feed(3)
-
-    printer.setDefault()  # Restore printer to defaults
-
-
-def printHDMWalletSeed(headerText, seed, xpub):
-    qrSize = (170, 170)
-    qrPad = 10
-
-    finalImg = Image.new("RGB", (384, qrSize[1]), "white")
-    finalImg.paste(getQR(seed, qrSize), (qrPad, 0))
-    finalImg.paste(getQR(xpub, qrSize), (qrSize[0] + qrPad * 2 + 14, 0))
-
-    printer = Adafruit_Thermal("/dev/ttyAMA0", 19200, timeout=5)
-
-    dividerLine = Image.new("RGB", (384, 6), "black")
-    dividerLine.paste(Image.new("RGB", (384, 4), "white"), (0, 0))
-
-    printer.printImage(dividerLine, True)
-    printer.println(headerText)
-    printer.println("Seed Mnemonic: " + seed + '\n')
-    printer.println("xpub: " + xpub + '\n')
-    printer.printImage(finalImg, True)
-    printer.feed(1)
-    printer.printImage(dividerLine, True)
-
-    printer.feed(3)
-
-    printer.setDefault()  # Restore printer to defaults
-
-
-def encodeQRAndPrintText(headerText, ttp):
     qrSize = (340, 340)
 
     finalImg = Image.new("RGB", (384, 440), "white")
