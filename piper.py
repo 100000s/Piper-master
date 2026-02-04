@@ -17,12 +17,43 @@
 
 import math
 import random
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-import qrcode
+import os
 import sys
-import sqlite3
+import time
+
+# GPIO support for Raspberry Pi pushbutton and forget switch
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    PI_HARDWARE = True
+except ImportError:
+    PI_HARDWARE = False
+    print("[WARN] RPi.GPIO not found. GPIO features disabled.")
+
+# GPIO pin assignments
+BUTTON_PIN = 17      # Momentary pushbutton
+FORGET_PIN = 27      # Forget mode switch
+
+if PI_HARDWARE:
+    GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(FORGET_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+def is_forget_mode():
+    """Returns True if the forget switch is active (grounded)."""
+    if PI_HARDWARE:
+        return GPIO.input(FORGET_PIN) == GPIO.LOW
+    return False
+
+def wait_for_button_press():
+    """Blocks until the pushbutton is pressed (active low)."""
+    if PI_HARDWARE:
+        print("[INFO] Waiting for button press...")
+        while GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+            time.sleep(0.05)
+        print("[INFO] Button pressed!")
+    else:
+        input("Press Enter to simulate button press...")
+
 MOCK_PRINTER = True  # Set to False to use real Adafruit_Thermal printer
 
 if not MOCK_PRINTER:
