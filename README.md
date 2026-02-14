@@ -99,3 +99,22 @@ This project is licensed under the GNU GPL v3. See license.txt for details.
   - Other side to GND
 
 See the original Piper documentation or community guides for detailed wiring photos and troubleshooting.
+
+## Paper Wallet Design (Cheque Style)
+
+The default paper wallet is designed to look like a cheque, with space to write:
+- Amount (BTC or sats)
+- Date loaded
+- Date swept
+
+**Warning:** Only use archive quality (BPA-free, long-life) thermal paper to ensure the private key remains legible for years. Standard receipt paper will fade and may become unreadable.
+
+## Quick Start for Non-Technical Users
+1. Use a Raspberry Pi 3B or 4 and a TTL thermal printer (see hardware list above).
+2. Download the Piper software and follow the setup instructions.
+3. Connect the printer to the Pi's GPIO as described.
+4. Run `python3 gui.py` and follow the on-screen instructions to generate and print a wallet.
+5. Write the amount, date loaded, and date swept on the printed wallet.
+6. Store the wallet in a safe, dry place.
+
+No advanced technical skills are required—just basic assembly and following the step-by-step guide.

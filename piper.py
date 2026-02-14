@@ -310,8 +310,15 @@ def print_keypair(pubkey, privkey, leftBorderText, coinType, btcaddr):
     font = ImageFont.truetype(
         "/usr/share/fonts/ttf/ubuntu-font-family-0.80/UbuntuMono-R.ttf", 20)
 
-# draw the QR code on the final image
+    # draw the QR code on the final image
     finalImg.paste(pubkeyImg, (104, 25))
+
+    # --- Add cheque-style fields for user to fill in ---
+    # These will be blank lines for Amount, Date Loaded, Date Swept
+    font_cheque = ImageFont.truetype("/usr/share/fonts/ttf/ubuntu-font-family-0.80/UbuntuMono-R.ttf", 18)
+    draw.text((10, 820), "Amount: ________________________", font=font_cheque, fill=(0, 0, 0))
+    draw.text((10, 850), "Date Loaded: ___________________", font=font_cheque, fill=(0, 0, 0))
+    draw.text((10, 880), "Date Swept: ____________________", font=font_cheque, fill=(0, 0, 0))
 
 # ---end the public key qr code generation and drawing section---
 
