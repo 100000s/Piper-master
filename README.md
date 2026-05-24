@@ -1,6 +1,10 @@
 # Piper Wallet (Raspberry Pi Edition)
 
-Piper is a Python-based tool for generating and printing secure cryptocurrency paper wallets. This version is updated for Python 3 and Raspberry Pi compatibility, closely matching the original Piper hardware experience.
+Piper is a Python-based tool for generating and printing secure cryptocurrency paper wallets. This version is updated for Python 3 and Raspberry Pi compatibility, closely matching the original Piper hardware experience, and can be used offline for printing empty BitCheques, which can be modified with various added security levels. 
+
+The design will be further modified for secure preloaded and escrowed SatNotes in programmatically determined denominations. 
+
+https://docs.google.com/document/d/1Zpia1PRS72jTqq5QKAj5qeHa7yzgWLj3j0msk9KXrlg/edit?usp=drivesdk
 
 ## Features
 - Print single or bulk wallets for Bitcoin and altcoins
